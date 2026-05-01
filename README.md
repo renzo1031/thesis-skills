@@ -4,10 +4,26 @@
 
 核心 skill：`thesis-standardizer`
 
+## 分层设计
+
+这个仓库按成熟 Codex skill 的方式分层：
+
+```text
+thesis-standardizer/
+  SKILL.md                         # AI 入口：路由、规则、质量门
+  references/                      # 按任务加载的详细工作流
+  scripts/                         # 可重复执行的确定性脚本
+  assets/thesis-ai-standard/        # 复制到论文项目里的模板包
+  agents/openai.yaml               # UI 元数据
+```
+
+`SKILL.md` 不塞全部细节，只告诉 AI 什么时候读哪个 reference、什么时候跑哪个 script。模板和规范放在 `assets/`，这样新项目可以一键初始化。
+
 ## 能做什么
 
 - 根据学校论文模板、任务书、源码、数据库、接口、截图、测试报告生成论文资料包。
 - 自动初始化 `thesis-ai-standard/`，包含标准配置、论文事实模板、图表登记表、评分表和 draw.io 图模板。
+- 扫描程序目录，生成 `paper-context/evidence/`，给论文写作提供源码证据索引。
 - 支持系统设计与实现、实验研究、调查分析、工程设计、文献综述等本科论文类型。
 - 从 PDF 论文中抽取候选参考文献段落。
 - 建立“章节论点 ↔ 可引用文献 ↔ PDF 来源”的文献交叉引用索引。
@@ -63,12 +79,16 @@ thesis-ai-standard/
 
 1. 上传学校模板、任务书、开题报告或导师要求。
 2. 上传程序源码、数据库结构、接口文档、运行截图、测试报告。
-3. 让 AI 先填写 `standard-profile.yaml`，明确学校规则和参考文献版本。
-4. 让 AI 再填写 `thesis-ai-spec.yaml`，抽取真实论文事实。
-5. 让 AI 填写 `figure-registry.yaml`，规划图、表、公式和截图。
-6. 按章节写正文，证据不足时先补材料。
-7. 用 `ai-review-rubric.json` 做终稿审查。
-8. 最后进入 Word/PDF 排版检查。
+3. 对系统实现类项目，先生成源码证据索引：
+   ```powershell
+   python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\build_project_evidence.py . --out .\paper-context\evidence
+   ```
+4. 让 AI 先填写 `standard-profile.yaml`，明确学校规则和参考文献版本。
+5. 让 AI 再填写 `thesis-ai-spec.yaml`，抽取真实论文事实。
+6. 让 AI 填写 `figure-registry.yaml`，规划图、表、公式和截图。
+7. 按章节写正文，证据不足时先补材料。
+8. 用 `ai-review-rubric.json` 做终稿审查。
+9. 最后进入 Word/PDF 排版检查。
 
 ## PDF 文献交叉引用
 

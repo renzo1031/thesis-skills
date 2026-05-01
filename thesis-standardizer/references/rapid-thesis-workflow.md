@@ -36,16 +36,21 @@ thesis-ai-standard/templates/figure-registry.yaml
 
 For software/system projects:
 
-1. Read repository structure and identify frontend, backend, database, external services, and test assets.
-2. Extract real facts into `thesis-ai-spec.yaml`.
-3. Create a figure plan in `figure-registry.yaml`:
+1. Run `build_project_evidence.py` to create a first-pass evidence folder:
+   ```powershell
+   python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\build_project_evidence.py . --out .\paper-context\evidence
+   ```
+2. Read `project-evidence.json`, `tech-stack.md`, `api-list.md`, `database-schema.md`, and `test-results.md`.
+3. Inspect the source files behind important claims; script output is an index, not proof by itself.
+4. Extract real facts into `thesis-ai-spec.yaml`.
+5. Create a figure plan in `figure-registry.yaml`:
    - system architecture
    - module diagram
    - business flow
    - ER diagram or data model
    - key sequence diagrams
    - screenshots and test result figures
-4. Draft chapters in this order:
+6. Draft chapters in this order:
    - related technology
    - requirement analysis
    - overall design

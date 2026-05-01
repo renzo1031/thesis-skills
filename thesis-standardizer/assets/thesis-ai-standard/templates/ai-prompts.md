@@ -5,7 +5,8 @@
 1. `standard-profile.yaml`
 2. `thesis-ai-spec.yaml`
 3. `figure-registry.yaml`
-4. 当前章节正文和证据材料
+4. `paper-context/evidence/` 中的证据索引
+5. 当前章节正文和证据材料
 
 如果学校模板与本套件默认规则冲突，必须以学校模板为准。
 
@@ -25,6 +26,31 @@
 要求：
 - 只基于已提供材料，不要编造学校要求。
 - 如果论文类型不明确，先列出可判断依据和需要确认的信息。
+```
+
+## 1.5 程序证据抽取
+
+```text
+请先检查项目中是否已有 paper-context/evidence/。
+如果没有，请运行 thesis-standardizer 的 build_project_evidence.py。
+
+然后读取：
+- project-evidence.json
+- code-structure.md
+- tech-stack.md
+- api-list.md
+- database-schema.md
+- test-results.md
+
+输出：
+1. 可用于论文的真实技术栈
+2. 可用于架构图的模块边界
+3. 可用于数据库设计的表/实体线索
+4. 可用于接口说明的 API 线索
+5. 可用于测试章节的证据
+6. 仍需人工确认的源码事实
+
+要求：脚本扫描结果只是索引，重要结论必须回看源码或用户材料确认。
 ```
 
 ## 2. 标准配置检查

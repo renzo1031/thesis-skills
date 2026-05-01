@@ -250,7 +250,9 @@ figure_policy:
   naming_pattern: "figure-{chapter}-{index}-{english-name}.drawio"
 
 evidence_index:
+  project_evidence: "paper-context/evidence/project-evidence.json"
   code_structure: "paper-context/evidence/code-structure.md"
+  tech_stack: "paper-context/evidence/tech-stack.md"
   database_schema: "paper-context/evidence/database-schema.md"
   api_list: "paper-context/evidence/api-list.md"
   test_results: "paper-context/evidence/test-results.md"

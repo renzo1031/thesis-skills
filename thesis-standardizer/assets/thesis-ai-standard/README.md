@@ -17,9 +17,10 @@
 4. 填写 `templates/thesis-ai-spec.yaml`，记录题目、专业、论文类型、章节、研究对象、证据材料和风险项。
 5. 使用 `templates/chapter-section-template.md` 逐章生成、改写或检查正文。
 6. 使用 `templates/figure-registry.yaml` 管理全部图、表、公式、截图、源文件和正文引用位置。
-7. 使用 `drawio/` 下的 `.drawio` 模板重画结构性图。
-8. 文献综述或相关工作较多时，先用 skill 脚本抽取 PDF 参考文献，再建立文献交叉引用索引。
-9. 最后用 `templates/ai-review-rubric.json` 做终稿审查，再进入 Word/PDF 视觉检查。
+7. 系统实现类论文先运行 `build_project_evidence.py` 生成 `paper-context/evidence/`。
+8. 使用 `drawio/` 下的 `.drawio` 模板重画结构性图。
+9. 文献综述或相关工作较多时，先用 skill 脚本抽取 PDF 参考文献，再建立文献交叉引用索引。
+10. 最后用 `templates/ai-review-rubric.json` 做终稿审查，再进入 Word/PDF 视觉检查。
 
 ## 文件结构
 
@@ -75,3 +76,24 @@ thesis-ai-standard/
 - 论文事实：写入 `thesis-ai-spec.yaml`。
 - 图表清单：写入 `figure-registry.yaml`。
 - 专属图形：复制 `drawio/` 模板后按论文对象改节点。
+
+## 证据层建议
+
+系统实现类项目建议建立：
+
+```text
+paper-context/
+  evidence/
+    project-evidence.json
+    code-structure.md
+    tech-stack.md
+    api-list.md
+    database-schema.md
+    test-results.md
+  literature/
+    reference-extraction.json
+    reference-extraction.md
+    citation-crossrefs.md
+```
+
+这些文件是论文事实依据，不是正文。AI 写作时必须把证据转化为论文语体，不能把扫描过程写进正文。
