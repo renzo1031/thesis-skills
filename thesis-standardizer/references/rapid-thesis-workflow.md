@@ -32,6 +32,12 @@ thesis-ai-standard/templates/thesis-ai-spec.yaml
 thesis-ai-standard/templates/figure-registry.yaml
 ```
 
+Validate the package before writing:
+
+```powershell
+python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-ai-standard
+```
+
 ## From Program To Thesis
 
 For software/system projects:
@@ -87,6 +93,7 @@ Instead output an exact missing-material list.
 
 Before final response, run or perform:
 
+- `check_thesis_workspace.py` for generated template packages
 - YAML parse for standard/spec/registry files
 - JSON parse for review rubric
 - XML parse for draw.io templates if modified

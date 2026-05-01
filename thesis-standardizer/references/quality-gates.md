@@ -7,6 +7,7 @@ Use before saying a thesis package, chapter draft, or review is complete.
 - `standard-profile.yaml` exists and identifies school/advisor rules.
 - Reference style version is explicit.
 - Bundled defaults are marked as fallback, not school requirements.
+- Standard conflicts are resolved using `standards-and-template-resolution.md`.
 - Word/PDF layout-sensitive items are not claimed verified unless they were checked.
 
 ## Gate 2: Evidence
@@ -15,6 +16,7 @@ Use before saying a thesis package, chapter draft, or review is complete.
 - `figure-registry.yaml` lists each figure, table, equation, screenshot, and source.
 - Claimed functions map to code, screenshots, tests, or user-provided materials.
 - Claimed tests or experiments map to reports, logs, tables, or screenshots.
+- Literature claims map to verified references or explicit `needs_check` candidates.
 
 ## Gate 3: Academic Integrity
 
@@ -45,6 +47,7 @@ Run applicable checks:
 ```powershell
 python C:\Users\Lenovo\.codex\skills\.system\skill-creator\scripts\quick_validate.py .\thesis-standardizer
 python -m py_compile .\thesis-standardizer\scripts\*.py
+python .\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-standardizer\assets\thesis-ai-standard
 ```
 
 For generated thesis workspaces:

@@ -40,6 +40,14 @@ paper-context/evidence/
 
 The script is a first pass. Read the outputs, then inspect source files before making important claims.
 
+If the workspace was just initialized, also run:
+
+```powershell
+python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-ai-standard
+```
+
+Treat warnings as setup tasks before drafting, especially unconfirmed reference standard versions and unfilled thesis type.
+
 ## Evidence To Thesis Mapping
 
 | Evidence | Thesis Use |
@@ -50,6 +58,16 @@ The script is a first pass. Read the outputs, then inspect source files before m
 | SQL/migrations/entities | database design and ER diagrams |
 | tests/reports | testing chapter and result credibility |
 | screenshots | detailed implementation and testing figures |
+
+## Evidence Layers
+
+Use five layers instead of jumping directly to chapters:
+
+1. project inventory: files, tech markers, run scripts, database/API candidates
+2. verified facts: source files or user materials that confirm a feature or result
+3. thesis facts: normalized entries in `thesis-ai-spec.yaml`
+4. figure/table plan: entries in `figure-registry.yaml`
+5. prose: chapter sections that cite the previous layers
 
 ## Draft Order For System Papers
 

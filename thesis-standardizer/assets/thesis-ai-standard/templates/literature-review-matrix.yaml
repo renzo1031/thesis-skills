@@ -15,6 +15,8 @@ sources:
   extracted_reference_json: "paper-context/literature/reference-extraction.json"
   extracted_reference_md: "paper-context/literature/reference-extraction.md"
   citation_crossrefs_md: "paper-context/literature/citation-crossrefs.md"
+  citation_crossrefs_json: "paper-context/literature/citation-crossrefs.json"
+  citation_crossref_register: "thesis-ai-standard/templates/citation-crossref-register.yaml"
 
 themes:
   - id: "theme-1"

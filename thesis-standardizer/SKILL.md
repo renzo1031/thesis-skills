@@ -11,19 +11,32 @@ Treat a thesis as an evidence-driven project. Do not start from prose. Start fro
 
 Layering:
 
-1. `SKILL.md`: routing, guardrails, and quality gates.
-2. `references/`: detailed workflows loaded only when needed.
-3. `scripts/`: deterministic extraction and initialization helpers.
-4. `assets/thesis-ai-standard/`: portable project templates copied into the user's workspace.
-5. user's materials: school template, source code, PDFs, screenshots, data, tests, and drafts.
+1. `SKILL.md`: routing, contracts, guardrails, and quality gates.
+2. `references/`: detailed workflows loaded only when the task needs them.
+3. `scripts/`: deterministic extraction, bootstrap, and validation helpers.
+4. `assets/thesis-ai-standard/`: portable thesis project templates copied into the user's workspace.
+5. User materials: school template, source code, PDFs, screenshots, data, tests, and drafts.
+
+Keep this order when working: standards -> facts -> evidence -> chapter plan -> prose -> Word/PDF review.
 
 ## Decision Tree
 
 - New thesis workspace or missing templates: run `scripts/init_thesis_workspace.py <target-dir>`.
+- Standards, school-template interpretation, or version conflicts: read `references/standards-and-template-resolution.md`.
 - Program/source-code thesis: read `references/source-to-thesis-workflow.md`; run `scripts/build_project_evidence.py <project-dir> --out paper-context/evidence`.
 - PDF literature, related work, or citations: read `references/literature-and-pdf-workflow.md`; run the PDF extraction and citation cross-reference scripts.
 - Existing draft or Word-format-sensitive work: use this skill for standards/evidence, then use `thesis-docx`/`docx` for Word layout and PDF review.
-- Before final delivery: read `references/quality-gates.md` and run the applicable checks.
+- Before final delivery: read `references/quality-gates.md` and run `scripts/check_thesis_workspace.py <workspace>` when a `thesis-ai-standard/` folder exists.
+
+## Mode Contracts
+
+| User asks for | Load | Run | Deliver |
+| --- | --- | --- | --- |
+| "turn my program into a thesis" | `source-to-thesis-workflow.md` | `build_project_evidence.py` | evidence index, missing materials, chapter plan |
+| "make the standard generic" | `standards-and-template-resolution.md` | `check_thesis_workspace.py` | standards priority, template profile, unsupported assumptions |
+| "handle PDF literature" | `literature-and-pdf-workflow.md` | `extract_pdf_references.py`, `build_literature_crossrefs.py` | candidate references, citation cross-reference index, verification list |
+| "write or revise a chapter" | `rapid-thesis-workflow.md`, then the matching detailed workflow | validation scripts if files changed | chapter draft plus evidence gaps |
+| "final check" | `quality-gates.md` | `check_thesis_workspace.py` and applicable format checks | critical/major/minor findings and remaining manual review |
 
 ## Required Read Order
 
@@ -34,6 +47,7 @@ When `thesis-ai-standard/` exists, read:
 3. `thesis-ai-standard/templates/standard-profile.yaml`
 4. `thesis-ai-standard/templates/thesis-ai-spec.yaml`
 5. `thesis-ai-standard/templates/figure-registry.yaml`
+6. literature or citation templates only when the task involves references.
 
 If those files do not exist, bootstrap them from `assets/thesis-ai-standard/`.
 
@@ -46,7 +60,7 @@ If those files do not exist, bootstrap them from `assets/thesis-ai-standard/`.
 5. Fill `figure-registry.yaml` before generating diagrams or screenshots.
 6. Stop and list missing materials when a claim lacks evidence.
 7. Draft chapter by chapter using `chapter-section-template.md`.
-8. Review with `ai-review-rubric.json` and the quality gates.
+8. Review with `ai-review-rubric.json`, `check_thesis_workspace.py`, and the quality gates.
 
 ## Thesis Type Selection
 
@@ -63,6 +77,7 @@ Do not force non-software papers into the system-design chapter structure.
 ## Non-Negotiable Rules
 
 - School and advisor rules override bundled defaults.
+- National standards are fallback references unless the school explicitly adopts them.
 - Never invent functions, fields, API paths, tests, experiment data, samples, citations, DOI values, or school requirements.
 - Never expose AI workflow language in thesis body text.
 - Every figure/table/equation/screenshot must have source, ID, title, first mention, and status.
@@ -71,6 +86,7 @@ Do not force non-software papers into the system-design chapter structure.
 
 ## Bundled References
 
+- `references/standards-and-template-resolution.md`: source priority, current public standards, and school-template conflict handling.
 - `references/source-to-thesis-workflow.md`: program/source-code to thesis evidence workflow.
 - `references/literature-and-pdf-workflow.md`: PDF reference extraction and citation cross-reference workflow.
 - `references/rapid-thesis-workflow.md`: short path for common thesis package tasks.
@@ -82,3 +98,4 @@ Do not force non-software papers into the system-design chapter structure.
 - `scripts/build_project_evidence.py`: create source-code evidence files for system-design papers.
 - `scripts/extract_pdf_references.py`: extract candidate reference sections from PDFs.
 - `scripts/build_literature_crossrefs.py`: map extracted references to thesis topics or chapter claims.
+- `scripts/check_thesis_workspace.py`: validate required templates, parse YAML/JSON/XML, and report missing core files.

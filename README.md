@@ -26,7 +26,7 @@ thesis-standardizer/
 - 扫描程序目录，生成 `paper-context/evidence/`，给论文写作提供源码证据索引。
 - 支持系统设计与实现、实验研究、调查分析、工程设计、文献综述等本科论文类型。
 - 从 PDF 论文中抽取候选参考文献段落。
-- 建立“章节论点 ↔ 可引用文献 ↔ PDF 来源”的文献交叉引用索引。
+- 建立“章节论点 ↔ 候选文献 ↔ PDF 来源 ↔ 文末参考文献”的文献交叉引用闭环。
 - 约束 AI 不编造功能、字段、接口、实验数据、测试结果、参考文献和学校规则。
 
 ## 安装
@@ -63,6 +63,7 @@ thesis-ai-standard/
     thesis-ai-spec.yaml
     figure-registry.yaml
     literature-review-matrix.yaml
+    citation-crossref-register.yaml
     chapter-section-template.md
     ai-prompts.md
     ai-review-rubric.json
@@ -90,6 +91,12 @@ thesis-ai-standard/
 8. 用 `ai-review-rubric.json` 做终稿审查。
 9. 最后进入 Word/PDF 排版检查。
 
+可以让 AI 直接按这个 prompt 开始：
+
+```text
+Use $thesis-standardizer，先初始化 thesis-ai-standard，然后根据我的学校模板、源码、截图、测试材料和 PDF 文献生成论文证据包。先不要写正文，先输出标准优先级、真实事实、缺失材料、图表计划和章节目录。
+```
+
 ## PDF 文献交叉引用
 
 把 PDF 文献放到 `papers/` 后运行：
@@ -108,10 +115,20 @@ paper-context/literature/reference-extraction.md
 如果已经有章节主题或论文提纲，例如 `paper-context/topics.md`：
 
 ```powershell
-python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\build_literature_crossrefs.py .\paper-context\literature\reference-extraction.json --topics .\paper-context\topics.md --out .\paper-context\literature\citation-crossrefs.md
+python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\build_literature_crossrefs.py .\paper-context\literature\reference-extraction.json --topics .\paper-context\topics.md --out .\paper-context\literature\citation-crossrefs.md --json-out .\paper-context\literature\citation-crossrefs.json
 ```
 
-这会生成文献交叉引用索引。注意：PDF 抽取结果只是候选证据，最终作者、年份、题名、期刊、DOI、引用格式必须核验。
+这会生成文献交叉引用索引。随后把确认后的引用关系整理进 `thesis-ai-standard/templates/citation-crossref-register.yaml` 或项目副本。注意：PDF 抽取结果只是候选证据，最终作者、年份、题名、期刊、DOI、引用格式必须核验。
+
+## 自检
+
+修改或初始化模板后可以运行：
+
+```powershell
+python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-ai-standard
+```
+
+它会检查核心模板是否存在、YAML/JSON/draw.io 是否能解析、论文题目和参考文献版本等关键字段是否仍是占位内容。
 
 ## 规则
 

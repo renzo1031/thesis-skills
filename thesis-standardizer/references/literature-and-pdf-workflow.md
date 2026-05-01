@@ -34,7 +34,7 @@ The script extracts candidate reference sections. Treat output as raw evidence. 
 If a topic outline exists, create a citation cross-reference index:
 
 ```powershell
-python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\build_literature_crossrefs.py .\paper-context\literature\reference-extraction.json --topics .\paper-context\topics.md --out .\paper-context\literature\citation-crossrefs.md
+python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\build_literature_crossrefs.py .\paper-context\literature\reference-extraction.json --topics .\paper-context\topics.md --out .\paper-context\literature\citation-crossrefs.md --json-out .\paper-context\literature\citation-crossrefs.json
 ```
 
 Cross-reference rules:
@@ -45,6 +45,13 @@ Cross-reference rules:
 - Prefer system/application papers for design comparison sections.
 - Do not cite a paper merely because a keyword appears once.
 - Mark weak matches as `needs_check`.
+
+After generating cross-references, update `thesis-ai-standard/templates/citation-crossref-register.yaml` or a project copy of it. The register is the closure layer:
+
+- body claim -> citation candidate
+- citation candidate -> verified reference-list entry
+- reference-list entry -> body citation location
+- unresolved candidate -> `needs_check`, `rejected`, or `missing_source`
 
 ## Writing Literature Review
 
@@ -68,5 +75,6 @@ Avoid:
 
 - Every cited source appears in the reference list.
 - Every reference-list item is cited, unless school rules allow uncited background references.
+- `citation-crossref-register.yaml` or equivalent notes record the body/reference closure.
 - Reference format follows `standard-profile.yaml`.
 - Extraction uncertainty is resolved before final submission.

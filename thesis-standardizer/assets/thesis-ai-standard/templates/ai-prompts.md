@@ -159,3 +159,37 @@
 - 建议修改顺序
 - 必须人工复核的 Word/PDF 排版项
 ```
+
+## 7. 文献交叉引用闭环
+
+```text
+请读取：
+- paper-context/literature/reference-extraction.json
+- paper-context/literature/citation-crossrefs.md
+- thesis-ai-standard/templates/citation-crossref-register.yaml
+- 当前正文引用位置
+- 当前参考文献列表
+
+输出：
+1. 正文已有引用与文末条目的对应表
+2. 文末条目但正文未引用的问题
+3. 正文引用但文末缺条目的问题
+4. PDF 抽取候选但尚未核验的文献
+5. 与章节论点弱相关或不应引用的文献
+6. 需要补充核验的作者、年份、题名、来源、DOI 或 URL
+
+要求：候选文献不能直接当作最终参考文献；必须标注 verified / needs_check / rejected。
+```
+
+## 8. 论文资料包自检
+
+```text
+请运行 thesis-standardizer 的 check_thesis_workspace.py 检查 thesis-ai-standard。
+
+然后根据报告输出：
+1. 缺失文件
+2. 解析失败文件
+3. 仍是占位内容的关键字段
+4. 可以继续写作的部分
+5. 必须先补齐的材料
+```

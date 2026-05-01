@@ -19,7 +19,7 @@
 6. 使用 `templates/figure-registry.yaml` 管理全部图、表、公式、截图、源文件和正文引用位置。
 7. 系统实现类论文先运行 `build_project_evidence.py` 生成 `paper-context/evidence/`。
 8. 使用 `drawio/` 下的 `.drawio` 模板重画结构性图。
-9. 文献综述或相关工作较多时，先用 skill 脚本抽取 PDF 参考文献，再建立文献交叉引用索引。
+9. 文献综述或相关工作较多时，先用 skill 脚本抽取 PDF 参考文献，再建立文献交叉引用索引，并用 `citation-crossref-register.yaml` 做正文引用与文末参考文献闭环。
 10. 最后用 `templates/ai-review-rubric.json` 做终稿审查，再进入 Word/PDF 视觉检查。
 
 ## 文件结构
@@ -35,6 +35,7 @@ thesis-ai-standard/
     chapter-section-template.md
     figure-registry.yaml
     literature-review-matrix.yaml
+    citation-crossref-register.yaml
     ai-review-rubric.json
     ai-prompts.md
   drawio/
@@ -94,6 +95,8 @@ paper-context/
     reference-extraction.json
     reference-extraction.md
     citation-crossrefs.md
+    citation-crossrefs.json
+    citation-crossref-register.yaml
 ```
 
 这些文件是论文事实依据，不是正文。AI 写作时必须把证据转化为论文语体，不能把扫描过程写进正文。
