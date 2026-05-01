@@ -20,7 +20,8 @@
 7. 系统实现类论文先运行 `build_project_evidence.py` 生成 `paper-context/evidence/`。
 8. 使用 `drawio/` 下的 `.drawio` 模板重画结构性图。
 9. 文献综述或相关工作较多时，先用 skill 脚本抽取 PDF 参考文献，再建立文献交叉引用索引，并用 `citation-crossref-register.yaml` 做正文引用与文末参考文献闭环。
-10. 最后用 `templates/ai-review-rubric.json` 做终稿审查，再进入 Word/PDF 视觉检查。
+10. 正文写完或已有草稿时，用 `aigc-style-review.yaml` 和本地报告脚本做 AIGC 风格治理。
+11. 最后用 `templates/ai-review-rubric.json` 做终稿审查，再进入 Word/PDF 视觉检查。
 
 ## 文件结构
 
@@ -36,6 +37,7 @@ thesis-ai-standard/
     figure-registry.yaml
     literature-review-matrix.yaml
     citation-crossref-register.yaml
+    aigc-style-review.yaml
     ai-review-rubric.json
     ai-prompts.md
   drawio/
@@ -97,6 +99,19 @@ paper-context/
     citation-crossrefs.md
     citation-crossrefs.json
     citation-crossref-register.yaml
+  aigc/
+    aigc-style-report.md
+    aigc-style-report.json
 ```
 
 这些文件是论文事实依据，不是正文。AI 写作时必须把证据转化为论文语体，不能把扫描过程写进正文。
+
+## AIGC 风格治理建议
+
+本套件的 AIGC 模块不是“绕过检测器”，而是帮助论文减少模板化表达、空泛评价、模糊归因和证据不足的问题。推荐流程：
+
+1. 先生成 `paper-context/aigc/aigc-style-report.md`。
+2. 用户或 AI 根据报告确认需要修改的段落。
+3. 只对高风险段落做定向改写。
+4. 改写时保留事实、引用和数据边界。
+5. 把未核验的来源、数据或项目事实标为 `needs_source` 或 `needs_evidence`。

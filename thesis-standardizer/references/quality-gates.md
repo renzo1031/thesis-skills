@@ -24,6 +24,7 @@ Use before saying a thesis package, chapter draft, or review is complete.
 - No AI workflow leakage in body text.
 - PDF reference extraction is treated as candidate evidence until verified.
 - Private data, tokens, account names, phone numbers, and keys are not exposed in screenshots or prose.
+- AIGC style work is framed as academic writing quality review, not detector evasion.
 
 ## Gate 4: Structure
 
@@ -31,6 +32,14 @@ Use before saying a thesis package, chapter draft, or review is complete.
 - Chapter titles and numbering are continuous.
 - Introduction does not promise work absent from later chapters.
 - Conclusion summarizes completed work only.
+
+## Gate 4.5: AIGC Style Governance
+
+- `aigc-style-report.md` exists when the user requested AIGC/style reduction.
+- High-risk paragraphs were revised or explicitly left unchanged with reasons.
+- Vague attribution was removed, verified, or marked `needs_source`.
+- Generic positive conclusions were replaced with concrete claims, limits, or future work.
+- Revisions did not add unsupported facts or citations.
 
 ## Gate 5: Figures, Tables, Equations
 
@@ -48,6 +57,7 @@ Run applicable checks:
 python C:\Users\Lenovo\.codex\skills\.system\skill-creator\scripts\quick_validate.py .\thesis-standardizer
 python -m py_compile .\thesis-standardizer\scripts\*.py
 python .\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-standardizer\assets\thesis-ai-standard
+python .\thesis-standardizer\scripts\analyze_aigc_style.py .\sample-draft.md --out .\paper-context\aigc\aigc-style-report.md
 ```
 
 For generated thesis workspaces:

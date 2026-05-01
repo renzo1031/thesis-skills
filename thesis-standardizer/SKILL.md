@@ -1,6 +1,6 @@
 ---
 name: thesis-standardizer
-description: Standardize and draft undergraduate thesis or graduation-design papers from source code, school templates, task books, drafts, screenshots, databases, APIs, experiments, PDF literature, and test evidence. Use when the user asks to write, generate, refactor, check, or package a thesis; turn a program into thesis chapters; create thesis specs, figure registries, draw.io diagrams, evidence indexes, PDF reference extraction, or citation cross-reference maps; or enforce school thesis rules before drafting.
+description: Standardize and draft undergraduate thesis or graduation-design papers from source code, school templates, task books, drafts, screenshots, databases, APIs, experiments, PDF literature, and test evidence. Use when the user asks to write, generate, refactor, check, or package a thesis; turn a program into thesis chapters; create thesis specs, figure registries, draw.io diagrams, evidence indexes, PDF reference extraction, citation cross-reference maps, AIGC style-risk reports, academic prose revision reports, or school-rule enforcement before drafting.
 ---
 
 # Thesis Standardizer
@@ -19,12 +19,23 @@ Layering:
 
 Keep this order when working: standards -> facts -> evidence -> chapter plan -> prose -> Word/PDF review.
 
+## Module Map
+
+Use modules independently, then combine them for end-to-end thesis work:
+
+1. Standards module: school rules, advisor rules, national-standard fallback.
+2. Evidence module: source code, tests, screenshots, data, experiments.
+3. Literature module: PDF extraction, citation cross-references, reference closure.
+4. AIGC style-governance module: report-first academic prose review and targeted revision.
+5. Output module: final quality gates, Word/PDF handoff, residual risks.
+
 ## Decision Tree
 
 - New thesis workspace or missing templates: run `scripts/init_thesis_workspace.py <target-dir>`.
 - Standards, school-template interpretation, or version conflicts: read `references/standards-and-template-resolution.md`.
 - Program/source-code thesis: read `references/source-to-thesis-workflow.md`; run `scripts/build_project_evidence.py <project-dir> --out paper-context/evidence`.
 - PDF literature, related work, or citations: read `references/literature-and-pdf-workflow.md`; run the PDF extraction and citation cross-reference scripts.
+- AIGC, AI flavor, templated prose, academic style naturalness, or style report: read `references/aigc-style-governance.md`; run `scripts/analyze_aigc_style.py <draft-file> --out paper-context/aigc/aigc-style-report.md`.
 - Existing draft or Word-format-sensitive work: use this skill for standards/evidence, then use `thesis-docx`/`docx` for Word layout and PDF review.
 - Before final delivery: read `references/quality-gates.md` and run `scripts/check_thesis_workspace.py <workspace>` when a `thesis-ai-standard/` folder exists.
 
@@ -35,6 +46,7 @@ Keep this order when working: standards -> facts -> evidence -> chapter plan -> 
 | "turn my program into a thesis" | `source-to-thesis-workflow.md` | `build_project_evidence.py` | evidence index, missing materials, chapter plan |
 | "make the standard generic" | `standards-and-template-resolution.md` | `check_thesis_workspace.py` | standards priority, template profile, unsupported assumptions |
 | "handle PDF literature" | `literature-and-pdf-workflow.md` | `extract_pdf_references.py`, `build_literature_crossrefs.py` | candidate references, citation cross-reference index, verification list |
+| "lower AIGC flavor" | `aigc-style-governance.md` | `analyze_aigc_style.py` | style-risk report first, then targeted revision after confirmation |
 | "write or revise a chapter" | `rapid-thesis-workflow.md`, then the matching detailed workflow | validation scripts if files changed | chapter draft plus evidence gaps |
 | "final check" | `quality-gates.md` | `check_thesis_workspace.py` and applicable format checks | critical/major/minor findings and remaining manual review |
 
@@ -80,6 +92,7 @@ Do not force non-software papers into the system-design chapter structure.
 - National standards are fallback references unless the school explicitly adopts them.
 - Never invent functions, fields, API paths, tests, experiment data, samples, citations, DOI values, or school requirements.
 - Never expose AI workflow language in thesis body text.
+- Never frame AIGC work as bypassing a detector. Frame it as academic style, evidence density, source integrity, and revision transparency.
 - Every figure/table/equation/screenshot must have source, ID, title, first mention, and status.
 - PDF reference extraction creates candidates only; verify bibliography before final writing.
 - Claim completion only after running relevant script validation or clearly stating what could not be verified.
@@ -89,6 +102,7 @@ Do not force non-software papers into the system-design chapter structure.
 - `references/standards-and-template-resolution.md`: source priority, current public standards, and school-template conflict handling.
 - `references/source-to-thesis-workflow.md`: program/source-code to thesis evidence workflow.
 - `references/literature-and-pdf-workflow.md`: PDF reference extraction and citation cross-reference workflow.
+- `references/aigc-style-governance.md`: report-first AIGC style-risk review and academic prose revision workflow.
 - `references/rapid-thesis-workflow.md`: short path for common thesis package tasks.
 - `references/quality-gates.md`: final validation checklist.
 
@@ -99,3 +113,4 @@ Do not force non-software papers into the system-design chapter structure.
 - `scripts/extract_pdf_references.py`: extract candidate reference sections from PDFs.
 - `scripts/build_literature_crossrefs.py`: map extracted references to thesis topics or chapter claims.
 - `scripts/check_thesis_workspace.py`: validate required templates, parse YAML/JSON/XML, and report missing core files.
+- `scripts/analyze_aigc_style.py`: generate a style-risk report for thesis prose before targeted revision.

@@ -1,6 +1,6 @@
 interface:
   display_name: "论文标准化"
-  short_description: "按学校模板、源码证据和PDF文献生成论文资料包"
-  default_prompt: "Use $thesis-standardizer to initialize thesis-ai-standard, resolve school standards, build source/PDF evidence indexes, create citation cross-references, and draft chapters only after evidence gaps are listed."
+  short_description: "论文资料包、文献交叉引用和AIGC风格报告"
+  default_prompt: "Use $thesis-standardizer to initialize thesis-ai-standard, resolve school standards, build source/PDF evidence indexes, create citation cross-references, generate an AIGC style-risk report when drafts exist, and draft or revise chapters only after evidence gaps are listed."
 policy:
   allow_implicit_invocation: true
