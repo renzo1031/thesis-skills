@@ -10,6 +10,8 @@
 - 根据学校模板、导师要求和公开标准建立论文标准配置。
 - 从 PDF 文献中抽取候选参考文献，并建立正文引用与文末参考文献的交叉引用闭环。
 - 管理图、表、公式、截图、draw.io 源文件和正文引用位置。
+- 初始化 `paper-context/workflow/`，用多个 Markdown 文件持续记录当前论文执行阶段、步骤、进度、证据缺口和修改日志。
+- 读取 Word `.docx` 批注，把导师批注整理成待办清单，再按批注修改论文并记录修订日志。
 - 生成 AIGC 风格风险报告，再对高风险段落做定向学术化修改。
 - 检查论文中是否存在无证据功能、虚构引用、模糊归因、空泛结论和 AI 工作流痕迹。
 
@@ -24,7 +26,7 @@ thesis-standardizer/
   agents/openai.yaml               # UI 元数据
 ```
 
-功能按 5 个模块拆开：
+功能按 7 个模块拆开：
 
 | 模块 | 入口 reference | 脚本 | 用途 |
 |------|----------------|------|------|
@@ -32,6 +34,8 @@ thesis-standardizer/
 | 程序证据模块 | `source-to-thesis-workflow.md` | `build_project_evidence.py` | 扫描源码、技术栈、API、数据库、测试线索 |
 | 文献引用模块 | `literature-and-pdf-workflow.md` | `extract_pdf_references.py`, `build_literature_crossrefs.py` | 抽取 PDF 参考文献候选并建立交叉引用 |
 | AIGC 风格模块 | `aigc-style-governance.md` | `analyze_aigc_style.py` | 生成风格风险报告并指导定向修改 |
+| 工作台日志模块 | `workflow-state-management.md` | `init_workflow_logs.py` | 生成并维护多个 Markdown 进度文件 |
+| Word 批注模块 | `word-comment-revision-workflow.md` | `extract_docx_comments.py` | 抽取 Word 批注，生成修改待办和修订日志 |
 | 终稿审查模块 | `quality-gates.md` | 多脚本组合 | 检查证据链、学术诚信、图表引用和排版风险 |
 
 `SKILL.md` 不塞全部细节，只告诉 AI 什么时候读哪个 reference、什么时候跑哪个 script。模板和规范放在 `assets/`，这样新项目可以一键初始化。
@@ -96,7 +100,18 @@ thesis-ai-standard/
     er-diagram-template.drawio
     algorithm-workflow-template.drawio
     sequence-diagram-template.drawio
+paper-context/
+  workflow/
+    workflow-status.md
+    step-plan.md
+    progress-log.md
+    material-inventory.md
+    evidence-gaps.md
+    chapter-progress.md
+    revision-log.md
 ```
+
+这些 Markdown 文件就是这个 skill 的“项目记忆”。用户下次继续修改论文时，AI 应先读取 `workflow-status.md` 和 `step-plan.md`，知道论文执行到哪一步，再继续工作。
 
 ## 推荐工作流
 
@@ -106,6 +121,18 @@ thesis-ai-standard/
 
 ```text
 Use $thesis-standardizer，先初始化 thesis-ai-standard，然后根据我的学校模板、源码、截图、测试材料和 PDF 文献生成论文证据包。先不要写正文，先输出标准优先级、真实事实、缺失材料、图表计划和章节目录。
+```
+
+AI 会优先生成和维护：
+
+```text
+paper-context/workflow/workflow-status.md      # 当前执行到哪一步
+paper-context/workflow/step-plan.md            # 分步骤任务板
+paper-context/workflow/progress-log.md         # 每次会话做了什么
+paper-context/workflow/material-inventory.md   # 已上传/缺失材料
+paper-context/workflow/evidence-gaps.md        # 哪些论点缺证据
+paper-context/workflow/chapter-progress.md     # 各章节进度
+paper-context/workflow/revision-log.md         # 所有修改记录
 ```
 
 ### 2. 扫描程序证据
@@ -229,6 +256,37 @@ Use $thesis-standardizer，读取 paper-context/aigc/aigc-style-report.md 和 th
 - 不把外部检测报告当成绝对真相。
 - 最终目标是论文更自然、更具体、更有证据，而不是欺骗检测器。
 
+## Word 批注读取与自动修订
+
+如果导师在 Word 论文里写了批注，可以先抽取批注：
+
+```powershell
+python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\extract_docx_comments.py .\draft.docx --out .\paper-context\word-comments
+```
+
+生成：
+
+```text
+paper-context/word-comments/
+  word-comments.json
+  word-comment-todos.md
+  docx-revision-log.md
+```
+
+然后让 AI 按批注修改：
+
+```text
+Use $thesis-standardizer，读取 paper-context/word-comments/word-comment-todos.md，按导师 Word 批注逐条修改 draft.docx。能直接修改的就改；需要新增数据、来源或截图的地方标注 needs_evidence / needs_source；每条批注的处理结果写入 docx-revision-log.md 和 workflow/revision-log.md。
+```
+
+推荐处理规则：
+
+- 内容批注：按论文事实和证据修改，不编造。
+- 结构批注：先更新章节计划，再改正文。
+- 引用批注：必须走文献交叉引用闭环。
+- 格式批注：学校模板优先，必要时用 `thesis-docx` 做 Word/PDF 复核。
+- 不明确或冲突批注：标记 `blocked`，说明原因。
+
 ## 自检与终稿
 
 修改或初始化模板后可以运行：
@@ -251,6 +309,9 @@ Use $thesis-standardizer，按 quality-gates.md 和 ai-review-rubric.json 做终
 # 初始化论文模板包
 python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\init_thesis_workspace.py .
 
+# 只生成/补齐论文工作台 Markdown 日志
+python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\init_workflow_logs.py .
+
 # 扫描源码证据
 python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\build_project_evidence.py . --out .\paper-context\evidence
 
@@ -262,6 +323,9 @@ python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\build_literatu
 
 # 生成 AIGC 风格风险报告
 python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\analyze_aigc_style.py .\chapter-draft.md --out .\paper-context\aigc\aigc-style-report.md --json-out .\paper-context\aigc\aigc-style-report.json
+
+# 抽取 Word 批注为待办清单
+python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\extract_docx_comments.py .\draft.docx --out .\paper-context\word-comments
 
 # 检查 thesis-ai-standard 模板包
 python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-ai-standard
@@ -277,6 +341,8 @@ python $env:USERPROFILE\.codex\skills\thesis-standardizer\scripts\check_thesis_w
 - AI 不得编造功能、字段、接口、实验数据、测试结果、参考文献和 DOI。
 - AI 不得在论文正文中写“根据用户提供材料”“通过分析代码”“让 AI 生成”等工作流痕迹。
 - 每张图、表、公式、截图都必须有来源、编号、标题和正文引用位置。
+- 每次改变论文状态或正文内容，都应更新 `paper-context/workflow/` 中对应 Markdown。
+- Word 批注修改必须保留批注处理日志，不能静默改动。
 - AIGC 风格治理必须以提升论文质量为目标，不以规避检测为目标。
 
 ## 仓库内容边界

@@ -30,6 +30,8 @@ Then fill:
 thesis-ai-standard/templates/standard-profile.yaml
 thesis-ai-standard/templates/thesis-ai-spec.yaml
 thesis-ai-standard/templates/figure-registry.yaml
+paper-context/workflow/workflow-status.md
+paper-context/workflow/step-plan.md
 ```
 
 Validate the package before writing:
@@ -37,6 +39,8 @@ Validate the package before writing:
 ```powershell
 python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\check_thesis_workspace.py .\thesis-ai-standard
 ```
+
+Read `references/workflow-state-management.md` before long-running thesis work. Update `paper-context/workflow/*.md` at the start and end of every meaningful phase.
 
 ## From Program To Thesis
 
@@ -92,6 +96,21 @@ For existing chapter drafts or after first drafting:
 
 Do not describe this as bypassing an AIGC detector. Describe it as academic style and evidence-quality revision.
 
+## Word Comment Revision
+
+For `.docx` drafts with advisor comments:
+
+1. Extract comments:
+   ```powershell
+   python C:\Users\Lenovo\.codex\skills\thesis-standardizer\scripts\extract_docx_comments.py .\draft.docx --out .\paper-context\word-comments
+   ```
+2. Read `references/word-comment-revision-workflow.md`.
+3. Read `paper-context/word-comments/word-comment-todos.md`.
+4. Resolve comments one by one; log each change in:
+   - `paper-context/word-comments/docx-revision-log.md`
+   - `paper-context/workflow/revision-log.md`
+5. Use `thesis-docx`/`docx` for actual Word edits and final layout checks.
+
 ## Stop Conditions
 
 Do not draft final prose when these are missing:
@@ -109,6 +128,7 @@ Instead output an exact missing-material list.
 Before final response, run or perform:
 
 - `check_thesis_workspace.py` for generated template packages
+- workflow markdown files are updated after content changes
 - YAML parse for standard/spec/registry files
 - JSON parse for review rubric
 - XML parse for draw.io templates if modified

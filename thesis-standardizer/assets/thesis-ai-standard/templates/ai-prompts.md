@@ -221,3 +221,32 @@ Use $thesis-standardizer，请读取当前章节草稿，运行 AIGC style-gover
 4. 模糊归因必须补真实来源或标注 needs_source。
 5. 输出改写正文、关键改动说明、仍需补证据清单。
 ```
+
+## 11. 论文工作台进度更新
+
+```text
+Use $thesis-standardizer，请读取 paper-context/workflow/ 下的 workflow-status.md、step-plan.md、progress-log.md、evidence-gaps.md、chapter-progress.md 和 revision-log.md。
+
+请输出：
+1. 当前论文执行到哪一步
+2. 已完成事项
+3. 正在进行事项
+4. 阻塞事项和缺失材料
+5. 下一步 3 个动作
+
+然后更新对应 markdown 文件，保持状态一致。
+```
+
+## 12. Word 批注读取与修订
+
+```text
+Use $thesis-standardizer，请先运行 extract_docx_comments.py 读取 Word 文档批注，生成 paper-context/word-comments/word-comment-todos.md。
+
+然后：
+1. 按批注类型分组：内容、结构、引用、格式、图表、证据不足。
+2. 对每条批注给出处理策略：resolved / blocked / skipped。
+3. 能直接修改的批注，按 thesis-docx/docx 规则修改 Word 文档。
+4. 需要新增事实、数据或引用的批注，不要编造，标注 needs_evidence 或 needs_source。
+5. 修改后更新 docx-revision-log.md 和 paper-context/workflow/revision-log.md。
+6. 输出已解决批注、未解决批注、修改后的文档路径和需要人工复核的内容。
+```
