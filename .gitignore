@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+
+# Local thesis projects and private evidence should not be committed.
+papers/
+paper-context/
+*.doc
+*.docx
+*.pdf
+*.ppt
+*.pptx
+*.xlsx
+*.xls
+*.zip
+*.rar
+*.7z
+
+# Keep generated exports local.
+exports/
+dist/
